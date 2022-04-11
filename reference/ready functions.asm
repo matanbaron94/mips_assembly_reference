@@ -11,28 +11,80 @@
 	blt $t1, $t2, do_something	# if $t1 > $t2 -> next line | else -> do_something
 					# if $t1 < $t2 -> do_something | else -> next line
 	
+
 	
-	and $a0, $t1, $t2		# if $t1 == t2 -> $a0 = $t1 | else $a0 = 0
+	srl $a0,$a0,4 			# shift right logic 4 the value of $a0 and sve it at $a0
+					        # example: $a0 = 0xc52 = 1100 0101 0010
+						   $a0    >>>> 	 1100 0101      = 0xc5
+						   $a0 = 0xc5
+
+
+
+					
+	and $t3,$a0,$t1  		# examle: $a0 = 0xc52 = 1100 0101 0010
+						  $t1 = 0xc43 = 1100 0100 0011
+						  $a0 and $t1 = 1100 0100 0010 = 0xc42
+						  $t3 = 0x42
 	
-	or $a0, $t1, $t2		# if 
-	
-	
-	
+
+	or $t3,$a0,$t1  		# examle: $a0 = 0xc52 = 1100 0101 0010
+						  $t1 = 0xc43 = 1100 0100 0011
+						  $a0 or $t1  = 1100 0101 0011 = 0xc53
+						  $t3 = 0x53
+		
+
+
+
 	jal do_something		# jump to do_something
 	
 	jr $ra				# jump back to next line afrer last jal
 	
 	
+
+
+
 	# ------------------------------------------------------------------------------------
 	
 	
 	
+	work with arrays:
+
+	(1) load the address of the array:		la $a0, myArray
+
+	(2) read from the array:			lw, $t1, 0($a0)		$t1 = myArray[0]
+							lw, $t1, 4($a0)		$t1 = myArray[1]
+							lw, $t1, 8($a0)		$t1 = myArray[2]
 	
+	(3) write to the array:				sw, $t1, 0($a0)		myArray[0] = $t1
+							sw, $t1, 4($a0)		myArray[4] = $t1
+							sw, $t1, 8($a0)		myArray[8] = $t1
+
 	
+
+
+
+	# ------------------------------------------------------------------------------------
+
 	
+
+	work with .asciiz (string):
+
+	(1) load the address of the string:		la $a0, myString	$a0 = adrress of myString
+
+	(2) read char from the string			lw $t4, ($a0)		$t4 = myString	
+							lbu $t1($a0)		$t1 = myString[0]
+							srl $t4, $t4, 4		$t4 = myString >> 4
+							sw $t4, ($a0)		$a0 = my string
+							lbu $t1($a0)		$t1 = myString[1]
+
+
+
+
+	# ------------------------------------------------------------------------------------
+
+
 	
-	
-	
+
 	exit_program:		# exit the program
 		li $v0, 10
 		syscall
