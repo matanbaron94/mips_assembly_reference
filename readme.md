@@ -1,5 +1,5 @@
 
-# Mips assembly 32 model baseted Python
+# Mips assembly 32 model based Python
 
 
 Tested on
